@@ -2,9 +2,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    authInterrupts: true,
-  },
+  cacheComponents: true,
+  reactCompiler: true,
 };
 
 export default nextConfig;
