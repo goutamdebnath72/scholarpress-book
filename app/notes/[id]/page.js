@@ -1,6 +1,5 @@
-// app/notes/[id]/page.js  —  Server Component
+// app/notes/[id]/page.js
 import { notFound } from 'next/navigation';
-import BackButton from '@/app/ui/back-button';
 import { getNote } from '@/lib/data/notes';
 
 export default async function NotePage({ params }) {
@@ -10,7 +9,6 @@ export default async function NotePage({ params }) {
 
   return (
     <article>
-      <BackButton>Back to all notes</BackButton>
       <h1>{note.title}</h1>
       <p>{note.content}</p>
     </article>
