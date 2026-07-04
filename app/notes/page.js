@@ -1,9 +1,9 @@
-// app/notes/page.js
+// app/notes/page.js  —  Server Component
 import Link from 'next/link';
-import { allNotes } from '@/lib/notes';
+import { getAllNotes } from '@/lib/data/notes';
 
-export default function NotesPage() {
-  const notes = allNotes();
+export default async function NotesPage() {
+  const notes = await getAllNotes();
   return (
     <main>
       <h1>Notes</h1>

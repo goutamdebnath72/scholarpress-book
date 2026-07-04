@@ -1,0 +1,12 @@
+[
+  {
+    "id": "1",
+    "title": "Why I started ScholarPress",
+    "content": "A notes app forced me to stop forgetting what I read."
+  },
+  {
+    "id": "2",
+    "title": "Notes on Server Components",
+    "content": "The data lives next to the view."
+  }
+]
