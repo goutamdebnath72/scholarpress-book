@@ -1,23 +1,29 @@
 // components/note-card.jsx
-// Presentational Server Component — one note.
+import { ViewTransition } from 'react';
 import Link from 'next/link';
 
 export function NoteCard({ note, lang }) {
   return (
     <li className="note-card">
       <Link href={`/${lang}/notes/${note.id}`}>
-        <h2>{note.title}</h2>
-        {note.content && <p>{note.content.slice(0, 140)}</p>}
+        <ViewTransition name={`note-${note.id}-title`}>
+          <h2>{note.title}</h2>
+        </ViewTransition>
       </Link>
-      {note.tags?.length > 0 && (
-        <div className="tag-chips tag-chips-static">
-          {note.tags.map((t) => (
-            <span key={t.id} className="tag-chip">
-              {t.name}
-            </span>
-          ))}
-        </div>
-      )}
     </li>
+  );
+}
+
+// app/notes/[id]/page.js
+export default async function NotePage({ params }) {
+  const { id } = await params;
+  const note = await getNote(id);
+  return (
+    <article>
+      <ViewTransition name={`note-${note.id}-title`}>
+        <h1>{note.title}</h1>
+      </ViewTransition>
+      <p>{note.content}</p>
+    </article>
   );
 }
