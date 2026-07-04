@@ -1,0 +1,448 @@
+/* app/[lang]/globals.css — ScholarPress base styles */
+
+:root {
+  --accent: #2563eb;
+  --accent-dark: #1d4ed8;
+  --ink: #1a1a2e;
+  --muted: #6b7280;
+  --bg: #f7f8fa;
+  --surface: #ffffff;
+  --border: #e5e7eb;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.6;
+}
+
+/* ---- Header / nav ---- */
+header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem 2rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+header nav {
+  display: flex;
+  gap: 1.5rem;
+  margin-left: auto;
+}
+header a {
+  font-weight: 500;
+}
+header strong {
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+/* ---- Layout ---- */
+main,
+section {
+  max-width: 720px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+}
+h1 {
+  font-size: 2rem;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.25rem;
+}
+h2 {
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+  margin-top: 2rem;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--accent-dark);
+  text-decoration: underline;
+}
+
+/* ---- Form controls ---- */
+input,
+textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  margin: 0.35rem 0;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+button,
+input[type="submit"] {
+  padding: 0.6rem 1.1rem;
+  font: inherit;
+  font-weight: 500;
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+button:hover,
+input[type="submit"]:hover {
+  background: var(--accent-dark);
+}
+
+/* Stack forms neatly with breathing room */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: flex-start;
+  margin: 1.25rem 0;
+}
+form input,
+form textarea {
+  flex: 1 1 100%;
+}
+form button {
+  flex: 0 0 auto;
+}
+
+/* ---- Lists as cards ---- */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+li {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.85rem;
+  transition:
+    box-shadow 0.15s,
+    transform 0.15s;
+}
+li:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+li a {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* ---- Misc ---- */
+p {
+  color: var(--ink);
+}
+[role="alert"] {
+  color: #dc2626;
+  font-weight: 500;
+}
+footer {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+/* ===== Tags ===== */
+.tag-field {
+  position: relative;
+  flex: 1 1 100%;
+}
+
+.tag-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.5rem;
+  min-height: 2.6rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: text;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+.tag-chips:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* Static chip rows (note card / detail) need no input affordances */
+.tag-chips-static {
+  border: none;
+  padding: 0;
+  min-height: 0;
+  margin-top: 0.6rem;
+  cursor: default;
+  background: transparent;
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--accent-dark);
+  background: rgba(37, 99, 235, 0.1);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.tag-chip-readonly {
+  color: var(--accent-dark);
+}
+
+.tag-chip-x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  padding: 0;
+  font-size: 0.9rem;
+  line-height: 1;
+  color: var(--accent-dark);
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.tag-chip-x:hover {
+  background: rgba(37, 99, 235, 0.2);
+}
+
+.tag-draft {
+  flex: 1 1 6rem;
+  min-width: 6rem;
+  width: auto;
+  margin: 0;
+  padding: 0.2rem;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+.tag-draft:focus {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+.tag-suggest {
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  margin: 0.25rem 0 0;
+  padding: 0.25rem;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+.tag-suggest li {
+  all: unset;
+  display: block;
+}
+.tag-suggest button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.4rem 0.6rem;
+  font: inherit;
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.tag-suggest button:hover {
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--accent-dark);
+}
+
+/* Helper hint under the tag field */
+.tag-hint {
+  margin: 0.4rem 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* ===== Bookmark card layout ===== */
+.bookmark-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.bookmark-card > a {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bookmark-card > form {
+  flex: 0 0 auto;
+  margin: 0;
+}
+.bookmark-del {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0; /* hide any text glyph */
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+/* Draw the cross with two centered bars — always optically centered */
+.bookmark-del::before,
+.bookmark-del::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.7rem;
+  height: 1.5px;
+  background: var(--accent);
+  transition: background 0.15s;
+}
+.bookmark-del::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.bookmark-del::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.bookmark-del:hover {
+  border-color: #dc2626;
+  background: rgba(220, 38, 38, 0.06);
+}
+.bookmark-del:hover::before,
+.bookmark-del:hover::after {
+  background: #dc2626;
+}
+
+/* ===== Dashboard two-column layout ===== */
+
+/* Let the dashboard break out of the global 720px section width on
+   laptop-and-up so the two columns are comfortably wide.
+   Mobile/tablet keep the default narrow width (see media query below). */
+@media (min-width: 900px) {
+  .dashboard-wide {
+    max-width: 1100px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    width: 1100px;
+  }
+}
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* two equal columns, side by side */
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+/* Stack the columns on narrow screens so nothing gets cramped */
+@media (max-width: 640px) {
+  .dash-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dash-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* allow children to truncate */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem 1.25rem;
+}
+.dash-col h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+}
+
+/* Fixed-height scroll area */
+.dash-scroll {
+  max-height: 22rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.dash-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.dash-list li {
+  /* override the global card styling for these compact rows */
+  all: unset;
+  display: block;
+}
+.dash-list li + li {
+  border-top: 1px solid var(--border);
+}
+.dash-list a {
+  display: block;
+  padding: 0.55rem 0.25rem;
+  /* truncate long text to one line with an ellipsis */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dash-empty {
+  color: var(--muted);
+  font-size: 0.9rem;
+  padding: 0.5rem 0.25rem;
+}
