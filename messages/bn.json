@@ -1,0 +1,42 @@
+{
+  "notes": {
+    "title": "নোট",
+    "searchPlaceholder": "নোট খুঁজুন...",
+    "empty": "এখনো কোনো নোট নেই।",
+    "createNew": "নতুন নোট",
+    "noteCount": "{count, plural, =0 {কোনো নোট নেই} other {{count}টি নোট}}",
+    "newTitle": "নতুন নোট",
+    "created": "তৈরি হয়েছে"
+  },
+  "bookmarks": {
+    "title": "বুকমার্ক",
+    "empty": "কোনো বুকমার্ক নেই।",
+    "addUrl": "URL",
+    "addTitle": "শিরোনাম (ঐচ্ছিক)",
+    "add": "বুকমার্ক যোগ করুন"
+  },
+  "auth": {
+    "signIn": "Google দিয়ে সাইন ইন",
+    "signOut": "সাইন আউট",
+    "welcome": "স্বাগতম, {name}"
+  },
+  "nav": {
+    "notes": "নোট",
+    "bookmarks": "বুকমার্ক",
+    "dashboard": "ড্যাশবোর্ড"
+  },
+  "errors": {
+    "generic": "সমস্যা হয়েছে। আবার চেষ্টা করুন।",
+    "notFound": "পেজ পাওয়া যায়নি।",
+    "forbidden": "আপনার অনুমতি নেই।"
+  },
+  "home": {
+    "title": "স্কলারপ্রেস",
+    "tagline": "আপনার নোট এবং বুকমার্ক, এক জায়গায়।",
+    "signIn": "শুরু করতে সাইন ইন করুন"
+  },
+  "signIn": {
+    "title": "সাইন ইন",
+    "google": "Google দিয়ে সাইন ইন করুন"
+  }
+}

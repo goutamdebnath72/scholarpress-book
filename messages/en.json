@@ -1,0 +1,42 @@
+{
+  "notes": {
+    "title": "Notes",
+    "searchPlaceholder": "Search notes...",
+    "empty": "No notes yet.",
+    "createNew": "New note",
+    "noteCount": "{count, plural, =0 {No notes} one {{count} note} other {{count} notes}}",
+    "newTitle": "New note",
+    "created": "Created"
+  },
+  "bookmarks": {
+    "title": "Bookmarks",
+    "empty": "No bookmarks yet. Add one below.",
+    "addUrl": "URL",
+    "addTitle": "Title (optional)",
+    "add": "Add bookmark"
+  },
+  "auth": {
+    "signIn": "Sign in with Google",
+    "signOut": "Sign out",
+    "welcome": "Welcome, {name}"
+  },
+  "nav": {
+    "notes": "Notes",
+    "bookmarks": "Bookmarks",
+    "dashboard": "Dashboard"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "notFound": "Page not found.",
+    "forbidden": "You don't have permission to see this."
+  },
+  "home": {
+    "title": "ScholarPress",
+    "tagline": "Your notes and bookmarks, in one place.",
+    "signIn": "Sign in to get started"
+  },
+  "signIn": {
+    "title": "Sign in",
+    "google": "Sign in with Google"
+  }
+}
