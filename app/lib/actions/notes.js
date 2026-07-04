@@ -1,36 +1,28 @@
-// app/lib/actions/notes.js
+// app/lib/actions/notes.js  (revalidation added)
 'use server';
+
+import { updateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { revalidatePath } from 'next/cache';
 import { getSession } from '@/lib/session';
 import { notesStore } from '@/lib/data/notes';
-import { CreateNoteInput } from '@/lib/schemas/actions';
 
 export async function createNote(prevState, formData) {
-  // 1. Authenticate (a stub until Volume II adds real auth).
   const session = await getSession();
   if (!session?.user?.id) redirect('/sign-in');
 
-  // 2. Validate.
-  const parsed = CreateNoteInput.safeParse({
-    title: formData.get('title'),
-    content: formData.get('content') ?? '',
-    tags: (formData.get('tags') ?? '')
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean),
-  });
-  if (!parsed.success) {
-    return { error: 'Title is required.' };
-  }
+  const title = formData.get('title')?.trim();
+  const content = formData.get('content')?.trim() ?? '';
+  if (!title) return { error: 'Title is required.' };
 
-  // 3. Mutate. 4. Revalidate.
-  await notesStore.insert({
-    ...parsed.data,
+  const note = await notesStore.insert({
+    title,
+    content,
     userId: session.user.id,
   });
-  revalidatePath('/notes');
 
-  // 5. Redirect on success.
-  redirect('/notes');
+  // Collection tag: the list. Entry tag: this note.
+  updateTag('notes');
+  updateTag(`note-${note.id}`);
+
+  redirect(`/notes/${note.id}`);
 }

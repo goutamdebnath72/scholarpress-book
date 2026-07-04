@@ -1,10 +1,10 @@
-// app/lib/actions/bookmarks.js
+// app/lib/actions/bookmarks.js  (revalidation added)
 'use server';
+
+import { updateTag, revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { revalidatePath } from 'next/cache';
 import { getSession } from '@/lib/session';
 import { bookmarksStore } from '@/lib/data/bookmarks';
-import { CreateBookmarkInput } from '@/lib/schemas/actions';
 
 export async function createBookmark(prevState, formData) {
   const session = await getSession();
@@ -12,14 +12,11 @@ export async function createBookmark(prevState, formData) {
 
   const url = formData.get('url')?.trim();
   const title = formData.get('title')?.trim() ?? url;
-  const parsed = CreateBookmarkInput.safeParse({ url, title });
-  if (!parsed.success) return { error: 'A valid URL is required.' };
+  if (!url) return { error: 'URL is required.' };
 
-  await bookmarksStore.insert({
-    url: parsed.data.url,
-    title: parsed.data.title ?? parsed.data.url,
-    userId: session.user.id,
-  });
+  await bookmarksStore.insert({ url, title, userId: session.user.id });
+
+  updateTag('bookmarks');
   revalidatePath('/bookmarks');
   return { success: true };
 }
