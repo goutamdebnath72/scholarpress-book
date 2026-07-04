@@ -1,5 +1,5 @@
 // app/notes/page.js
-// Server Component: lists notes, links to each detail.
+import Link from 'next/link';
 import { allNotes } from '@/lib/notes';
 
 export default function NotesPage() {
@@ -10,7 +10,7 @@ export default function NotesPage() {
       <ul>
         {notes.map((n) => (
           <li key={n.id}>
-            <a href={`/notes/${n.id}`}>{n.title}</a>
+            <Link href={`/notes/${n.id}`}>{n.title}</Link>
           </li>
         ))}
       </ul>
