@@ -1,12 +1,27 @@
 # ScholarPress
 
 The companion application from *Next.js 16 with JavaScript* (Modern Tech Press).
-A small notes-and-bookmarks app with Google sign-in, a Postgres database via
+A small notes-and-bookmarks app with GitHub sign-in, a Postgres database via
 TypeORM, English/Bengali internationalisation, and an observability layer.
 
 This repository is the **final, consolidated state** of the project as it stands
 at the end of Volume II — assembled faithfully from the book's Appendix C
 (§§ C.1–C.34) plus the supporting actions taught in the chapters.
+
+---
+
+## Errata
+
+Corrections and post-publication notes for **both volumes** live in
+**[ERRATA.md](./ERRATA.md)**. Found a mistake? Please
+[open an errata issue](https://github.com/goutamdebnath72/scholarpress-book/issues/new?labels=errata).
+
+## Chapter branches
+
+Every chapter's end state is on its own branch — `ch11-end` … `ch28-end`
+(Volume I) and `v2-ch1-end` … `v2-ch8-end` (Volume II). They are for
+**inspection alongside the book**, not execution; `main` is the finished app.
+See **[BRANCHES.md](./BRANCHES.md)**.
 
 ---
 
@@ -19,7 +34,7 @@ scholarpress/
 │   │   ├── layout.js               root layout: shell + next-intl + nav
 │   │   ├── globals.css
 │   │   ├── page.js                 localized landing page
-│   │   ├── sign-in/page.js         Google sign-in
+│   │   ├── sign-in/page.js         GitHub sign-in
 │   │   ├── dashboard/page.js       auth-gated overview (parallel fetch)
 │   │   ├── notes/
 │   │   │   ├── page.js             notes list + full-text search
@@ -95,8 +110,9 @@ cp .env.example .env.local
 #    then edit .env.local:
 #      DATABASE_URL       -> your Postgres connection string
 #      AUTH_SECRET        -> run: npx auth secret
-#      GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET  -> from Google Cloud Console
-#         (authorised redirect URI: http://localhost:3000/api/auth/callback/google)
+#      GITHUB_ID / GITHUB_SECRET  -> from GitHub → Settings → Developer settings
+#         → OAuth Apps (authorised callback URL:
+#         http://localhost:3000/api/auth/callback/github)
 
 # 3. create the schema
 #    In development, data-source.js runs with synchronize:true and creates the
@@ -121,7 +137,7 @@ npm run test:e2e    # playwright end-to-end
 
 ## Honest notes
 
-- This environment could not run a live Next.js server, Postgres, or Google
+- This environment could not run a live Next.js server, Postgres, or GitHub
   OAuth, so the repo has been verified by **static checks only**: every import
   resolves, every JS/JSX file parses, every JSON parses. The
   "it runs on my Mac" step is yours — if `npm run dev` or `next build` reports
