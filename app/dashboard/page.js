@@ -1,25 +1,21 @@
 // app/dashboard/page.js
-import {
-  getNoteCount,
-  getRecentNotes,
-  getTopTags,
-} from '@/lib/data/dashboard';
+import { Suspense } from 'react';
+import { RecentNotes } from './recent-notes';
+import { TopTags } from './top-tags';
+import { RecentNotesSkeleton, TopTagsSkeleton } from './skeletons';
 
-export default async function Dashboard() {
-  // Three independent reads in parallel.
-  const [count, recent, topTags] = await Promise.all([
-    getNoteCount(),
-    getRecentNotes(),
-    getTopTags(),
-  ]);
-
+export default function Dashboard() {
   return (
-    <section>
+    <main>
       <h1>Dashboard</h1>
-      <p>{count} notes total</p>
-      <RecentList notes={recent} />
-      <TopTagsChart tags={topTags} />
-    </section>
+
+      <Suspense fallback={<RecentNotesSkeleton />}>
+        <RecentNotes />
+      </Suspense>
+
+      <Suspense fallback={<TopTagsSkeleton />}>
+        <TopTags />
+      </Suspense>
+    </main>
   );
 }
-
