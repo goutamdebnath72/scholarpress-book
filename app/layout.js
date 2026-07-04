@@ -1,13 +1,17 @@
-// app/layout.js  —  excerpt (header only)
-import NavLink from './ui/nav-link';
-import LayoutCounter from './ui/layout-counter';
+// app/layout.js
+import { Geist } from 'next/font/google';
 
-// ... inside RootLayout's <header>:
-<header>
-  <strong>ScholarPress</strong>
-  <nav>
-    <NavLink href="/" exact>Home</NavLink>
-    <NavLink href="/notes">Notes</NavLink>
-  </nav>
-  <LayoutCounter />
-</header>;
+const geist = Geist({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-body',
+});
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" className={geist.variable}>
+      <body>{children}</body>
+    </html>
+  );
+}
+
