@@ -12,8 +12,8 @@ jobs:
       postgres:
         image: postgres:16-alpine
         env:
-          POSTGRES_DB:       scholarpress_test
-          POSTGRES_USER:     sp
+          POSTGRES_DB: scholarpress_test
+          POSTGRES_USER: sp
           POSTGRES_PASSWORD: sp
         ports: ['5432:5432']
         options: --health-cmd pg_isready --health-interval 5s
@@ -36,7 +36,7 @@ jobs:
         run: npx playwright test
         env:
           DATABASE_URL: postgresql://sp:sp@localhost:5432/scholarpress_test
-          BASE_URL:     http://localhost:3000
+          BASE_URL: http://localhost:3000
       - name: Upload Playwright report on failure
         if: failure()
         uses: actions/upload-artifact@v4

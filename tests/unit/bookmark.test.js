@@ -5,7 +5,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 // collaborators has to be mocked or the import fails outside a Next.js request.
 const bookmarkRepo = {
   create: vi.fn(),
-  save:   vi.fn(),
+  save: vi.fn(),
   findOne: vi.fn(),
   remove: vi.fn(),
 };
@@ -52,8 +52,8 @@ describe('createBookmark', () => {
     expect(result.success).toBe(true);
     expect(bookmarkRepo.create).toHaveBeenCalledWith({
       userId: 'user-123',
-      url:    'https://example.com',
-      title:  'Example',
+      url: 'https://example.com',
+      title: 'Example',
     });
   });
 

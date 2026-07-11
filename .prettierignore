@@ -1,0 +1,5 @@
+node_modules
+.next
+package-lock.json
+tests/e2e/fixtures.js
+*.md

@@ -14,9 +14,7 @@ test('can create and view a note', async ({ authenticatedPage: page }) => {
   // After saving, the app redirects to the notes list
   await page.waitForURL('**/en/notes');
 
-  await expect(
-    page.getByRole('heading', { name: 'Test Note' })
-  ).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Test Note' })).toBeVisible();
 });
 
 // The ownership check is the most important test in the suite from a security

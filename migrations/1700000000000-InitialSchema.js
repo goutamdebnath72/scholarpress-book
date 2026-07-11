@@ -3,7 +3,7 @@
 // synchronize:true and creates these tables automatically; in production,
 // run migrations explicitly (npm run migration:run).
 export class InitialSchema1700000000000 {
-  name = 'InitialSchema1700000000000'
+  name = 'InitialSchema1700000000000';
 
   async up(queryRunner) {
     await queryRunner.query(`
@@ -15,7 +15,7 @@ export class InitialSchema1700000000000 {
         "role"      varchar NOT NULL DEFAULT 'viewer',
         "locale"    varchar NOT NULL DEFAULT 'en',
         "createdAt" timestamptz NOT NULL DEFAULT now()
-      )`)
+      )`);
     await queryRunner.query(`
       CREATE TABLE "notes" (
         "id"        uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -24,7 +24,7 @@ export class InitialSchema1700000000000 {
         "content"   text NOT NULL DEFAULT '',
         "deletedAt" timestamptz,
         "createdAt" timestamptz NOT NULL DEFAULT now()
-      )`)
+      )`);
     await queryRunner.query(`
       CREATE TABLE "bookmarks" (
         "id"        uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -32,12 +32,12 @@ export class InitialSchema1700000000000 {
         "url"       varchar NOT NULL,
         "title"     varchar,
         "createdAt" timestamptz NOT NULL DEFAULT now()
-      )`)
+      )`);
   }
 
   async down(queryRunner) {
-    await queryRunner.query(`DROP TABLE "bookmarks"`)
-    await queryRunner.query(`DROP TABLE "notes"`)
-    await queryRunner.query(`DROP TABLE "users"`)
+    await queryRunner.query(`DROP TABLE "bookmarks"`);
+    await queryRunner.query(`DROP TABLE "notes"`);
+    await queryRunner.query(`DROP TABLE "users"`);
   }
 }

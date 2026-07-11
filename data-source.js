@@ -1,26 +1,26 @@
 // data-source.js
-import "reflect-metadata";
-import { DataSource } from "typeorm";
-import { User } from "./entities/User";
-import { Note } from "./entities/Note";
-import { Bookmark } from "./entities/Bookmark";
-import { Tag } from "./entities/Tag";
+import 'reflect-metadata';
+import { DataSource } from 'typeorm';
+import { User } from './entities/User';
+import { Note } from './entities/Note';
+import { Bookmark } from './entities/Bookmark';
+import { Tag } from './entities/Tag';
 
 export const AppDataSource = new DataSource({
-  type: "postgres",
+  type: 'postgres',
   url: process.env.DATABASE_URL,
   // Supabase requires SSL on every connection, including in development.
   ssl: { rejectUnauthorized: false },
   entities: [User, Note, Bookmark, Tag],
 
   // Auto-create tables from entities in development; use migrations in production.
-  synchronize: process.env.NODE_ENV !== "production",
+  synchronize: process.env.NODE_ENV !== 'production',
 
   logging:
-    process.env.NODE_ENV === "development" ? ["error", "schema"] : ["error"],
+    process.env.NODE_ENV === 'development' ? ['error', 'schema'] : ['error'],
   maxQueryExecutionTime: 1000,
 
-  migrations: ["migrations/*.js"],
+  migrations: ['migrations/*.js'],
   migrationsRun: false,
 });
 

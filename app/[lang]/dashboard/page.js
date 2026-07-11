@@ -1,9 +1,9 @@
 // app/[lang]/dashboard/page.js
 // Server Component — auth-gated overview with parallel data fetching.
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
-import { getTranslations } from "next-intl/server";
-import { getRepos } from "@/data-source";
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
+import { getRepos } from '@/data-source';
 
 export default async function DashboardPage({ params }) {
   const { lang } = await params;
@@ -22,19 +22,19 @@ export default async function DashboardPage({ params }) {
       bookmarkRepo.count({ where: { userId } }),
       noteRepo.find({
         where: { userId },
-        order: { createdAt: "DESC" },
+        order: { createdAt: 'DESC' },
         take: 20,
       }),
       bookmarkRepo.find({
         where: { userId },
-        order: { createdAt: "DESC" },
+        order: { createdAt: 'DESC' },
         take: 20,
       }),
     ]);
 
   return (
     <section className="dashboard-wide">
-      <h1>{t("auth.welcome", { name: session.user.name ?? "" })}</h1>
+      <h1>{t('auth.welcome', { name: session.user.name ?? '' })}</h1>
       <p>
         {noteCount} notes · {bookmarkCount} bookmarks
       </p>
@@ -42,10 +42,10 @@ export default async function DashboardPage({ params }) {
       <div className="dash-grid">
         {/* Notes column */}
         <div className="dash-col">
-          <h2>{t("notes.title")}</h2>
+          <h2>{t('notes.title')}</h2>
           <div className="dash-scroll">
             {recentNotes.length === 0 ? (
-              <p className="dash-empty">{t("notes.empty")}</p>
+              <p className="dash-empty">{t('notes.empty')}</p>
             ) : (
               <ul className="dash-list">
                 {recentNotes.map((n) => (
@@ -62,10 +62,10 @@ export default async function DashboardPage({ params }) {
 
         {/* Bookmarks column */}
         <div className="dash-col">
-          <h2>{t("bookmarks.title")}</h2>
+          <h2>{t('bookmarks.title')}</h2>
           <div className="dash-scroll">
             {recentBookmarks.length === 0 ? (
-              <p className="dash-empty">{t("bookmarks.empty")}</p>
+              <p className="dash-empty">{t('bookmarks.empty')}</p>
             ) : (
               <ul className="dash-list">
                 {recentBookmarks.map((b) => (

@@ -1,10 +1,10 @@
 // app/[lang]/notes/[id]/page.js
 // Server Component — fetch one note, owner-scoped.
-import { auth } from "@/auth";
-import { redirect, notFound } from "next/navigation";
-import { getRepos } from "@/data-source";
-import { getTranslations } from "next-intl/server";
-import { deleteNote } from "@/actions/note";
+import { auth } from '@/auth';
+import { redirect, notFound } from 'next/navigation';
+import { getRepos } from '@/data-source';
+import { getTranslations } from 'next-intl/server';
+import { deleteNote } from '@/actions/note';
 
 export default async function NotePage({ params }) {
   const { lang, id } = await params;
@@ -37,11 +37,11 @@ export default async function NotePage({ params }) {
         </div>
       )}
       <footer>
-        {t("notes.created")}: {note.createdAt.toLocaleDateString(lang)}
+        {t('notes.created')}: {note.createdAt.toLocaleDateString(lang)}
       </footer>
       <form
         action={async () => {
-          "use server";
+          'use server';
           await deleteNote(id);
           redirect(`/${lang}/notes`);
         }}

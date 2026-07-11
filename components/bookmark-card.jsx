@@ -1,6 +1,6 @@
 // components/bookmark-card.jsx
 // Server Component card; delete is an inline form Server Action.
-import { deleteBookmark } from '@/actions/bookmark'
+import { deleteBookmark } from '@/actions/bookmark';
 
 export function BookmarkCard({ bookmark, lang }) {
   return (
@@ -10,12 +10,16 @@ export function BookmarkCard({ bookmark, lang }) {
       </a>
       <form
         action={async () => {
-          'use server'
-          await deleteBookmark(bookmark.id)
+          'use server';
+          await deleteBookmark(bookmark.id);
         }}
       >
-        <button type="submit" className="bookmark-del" aria-label="Delete bookmark"></button>
+        <button
+          type="submit"
+          className="bookmark-del"
+          aria-label="Delete bookmark"
+        ></button>
       </form>
     </li>
-  )
+  );
 }

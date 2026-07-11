@@ -1,12 +1,12 @@
 // components/note-form.jsx
-'use client'
+'use client';
 
-import { useActionState } from 'react'
-import { createNote }     from '@/actions/note'
-import { TagInput }       from '@/components/tag-input'
+import { useActionState } from 'react';
+import { createNote } from '@/actions/note';
+import { TagInput } from '@/components/tag-input';
 
 export function NoteForm({ lang, tagSuggestions = [] }) {
-  const [state, formAction, pending] = useActionState(createNote, {})
+  const [state, formAction, pending] = useActionState(createNote, {});
 
   return (
     <form action={formAction}>
@@ -21,5 +21,5 @@ export function NoteForm({ lang, tagSuggestions = [] }) {
         {pending ? 'Saving...' : 'Save note'}
       </button>
     </form>
-  )
+  );
 }

@@ -1,11 +1,11 @@
 // components/bookmark-form.jsx
-'use client'
+'use client';
 
-import { useActionState } from 'react'
-import { createBookmark } from '@/actions/bookmark'
+import { useActionState } from 'react';
+import { createBookmark } from '@/actions/bookmark';
 
 export function BookmarkForm() {
-  const [state, formAction, pending] = useActionState(createBookmark, {})
+  const [state, formAction, pending] = useActionState(createBookmark, {});
 
   return (
     <form action={formAction}>
@@ -18,5 +18,5 @@ export function BookmarkForm() {
         {pending ? 'Adding...' : 'Add bookmark'}
       </button>
     </form>
-  )
+  );
 }

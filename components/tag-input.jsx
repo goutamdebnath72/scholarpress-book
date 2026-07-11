@@ -1,7 +1,7 @@
 // components/tag-input.jsx
-'use client'
+'use client';
 
-import { useState, useRef } from 'react'
+import { useState, useRef } from 'react';
 
 // A chip/pill tag input. Type a tag and press Enter or comma to add it;
 // click the × on a chip to remove it. Suggestions (tags you've used
@@ -15,9 +15,9 @@ export function TagInput({
   initial = [],
   hint = 'Type a tag and press comma or Enter — or paste a comma-separated list.',
 }) {
-  const [tags, setTags] = useState(initial)
-  const [draft, setDraft] = useState('')
-  const inputRef = useRef(null)
+  const [tags, setTags] = useState(initial);
+  const [draft, setDraft] = useState('');
+  const inputRef = useRef(null);
 
   // Add one or more tags from a raw string. Splitting on commas (and
   // newlines, which sneak in from copied lists) is what lets a user type
@@ -27,48 +27,48 @@ export function TagInput({
     const incoming = raw
       .split(/[,\n]/)
       .map((t) => t.trim())
-      .filter(Boolean)
+      .filter(Boolean);
     if (incoming.length === 0) {
-      setDraft('')
-      return
+      setDraft('');
+      return;
     }
     setTags((prev) => {
-      const next = [...prev]
+      const next = [...prev];
       for (const t of incoming) {
         // case-insensitive de-dupe against existing and just-added tags
         if (!next.some((x) => x.toLowerCase() === t.toLowerCase())) {
-          next.push(t)
+          next.push(t);
         }
       }
-      return next
-    })
-    setDraft('')
-  }
+      return next;
+    });
+    setDraft('');
+  };
 
-  const removeTag = (t) => setTags(tags.filter((x) => x !== t))
+  const removeTag = (t) => setTags(tags.filter((x) => x !== t));
 
   const onChange = (e) => {
-    const v = e.target.value
+    const v = e.target.value;
     // If the user typed (or pasted) a comma, commit everything up to the
     // last comma as chips and keep any trailing text as the new draft.
     if (v.includes(',')) {
-      const lastComma = v.lastIndexOf(',')
-      addTags(v.slice(0, lastComma))
-      setDraft(v.slice(lastComma + 1).trimStart())
+      const lastComma = v.lastIndexOf(',');
+      addTags(v.slice(0, lastComma));
+      setDraft(v.slice(lastComma + 1).trimStart());
     } else {
-      setDraft(v)
+      setDraft(v);
     }
-  }
+  };
 
   const onKeyDown = (e) => {
     if (e.key === 'Enter') {
-      e.preventDefault()
-      addTags(draft)
+      e.preventDefault();
+      addTags(draft);
     } else if (e.key === 'Backspace' && !draft && tags.length) {
       // Backspace on an empty field removes the last chip.
-      removeTag(tags[tags.length - 1])
+      removeTag(tags[tags.length - 1]);
     }
-  }
+  };
 
   // Paste path. Whether the clipboard holds "a, b, c", "a,b,c", or a
   // newline-separated list, commit EVERY piece as a chip — including the
@@ -76,17 +76,17 @@ export function TagInput({
   // no separators at all (a single tag), fall through to normal typing so
   // the user can keep editing it before committing.
   const onPaste = (e) => {
-    const text = e.clipboardData.getData('text')
+    const text = e.clipboardData.getData('text');
     if (/[,\n]/.test(text)) {
-      e.preventDefault()
-      addTags(`${draft}${text}`)
+      e.preventDefault();
+      addTags(`${draft}${text}`);
     }
-  }
+  };
 
   const shown = suggestions
     .filter((s) => s.toLowerCase().includes(draft.toLowerCase()))
     .filter((s) => !tags.some((t) => t.toLowerCase() === s.toLowerCase()))
-    .slice(0, 6)
+    .slice(0, 6);
 
   return (
     <div className="tag-field">
@@ -122,7 +122,13 @@ export function TagInput({
         <ul className="tag-suggest">
           {shown.map((s) => (
             <li key={s}>
-              <button type="button" onMouseDown={(e) => { e.preventDefault(); addTags(s) }}>
+              <button
+                type="button"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  addTags(s);
+                }}
+              >
                 {s}
               </button>
             </li>
@@ -133,5 +139,5 @@ export function TagInput({
       {/* Hidden field the form actually submits */}
       <input type="hidden" name={name} value={tags.join(',')} />
     </div>
-  )
+  );
 }

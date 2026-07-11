@@ -1,7 +1,7 @@
 // auth.config.js
 // Edge-compatible configuration — no database imports
 // Imported by both auth.js (Node.js) and middleware.js (Edge)
-import GitHub from "next-auth/providers/github";
+import GitHub from 'next-auth/providers/github';
 
 export const authConfig = {
   providers: [
@@ -15,20 +15,20 @@ export const authConfig = {
           name: profile.name ?? profile.login,
           email: profile.email,
           image: profile.avatar_url,
-          role: "viewer",
-          locale: "en",
+          role: 'viewer',
+          locale: 'en',
         };
       },
     }),
   ],
-  pages: { signIn: "/en/sign-in" },
+  pages: { signIn: '/en/sign-in' },
 
   callbacks: {
     async jwt({ token, user, trigger }) {
       if (user) {
         token.id = user.id; // carry the user id into the token
-        token.role = user.role ?? "viewer";
-        token.locale = user.locale ?? "en";
+        token.role = user.role ?? 'viewer';
+        token.locale = user.locale ?? 'en';
         token.createdAt = Date.now();
       }
       // Time-based rotation (Chapter 1 §1.16)
@@ -37,7 +37,7 @@ export const authConfig = {
         token.createdAt = Date.now();
       }
       // Event-based rotation on role change (Chapter 1 §1.16)
-      if (trigger === "update" && user?.role) {
+      if (trigger === 'update' && user?.role) {
         token.role = user.role;
         token.createdAt = Date.now();
       }
@@ -51,5 +51,5 @@ export const authConfig = {
     },
   },
 
-  session: { strategy: "jwt" },
+  session: { strategy: 'jwt' },
 };

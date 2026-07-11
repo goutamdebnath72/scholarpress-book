@@ -23,7 +23,7 @@ body {
   font-family:
     system-ui,
     -apple-system,
-    "Segoe UI",
+    'Segoe UI',
     sans-serif;
   color: var(--ink);
   background: var(--bg);
@@ -107,7 +107,7 @@ textarea {
 }
 
 button,
-input[type="submit"] {
+input[type='submit'] {
   padding: 0.6rem 1.1rem;
   font: inherit;
   font-weight: 500;
@@ -119,7 +119,7 @@ input[type="submit"] {
   transition: background 0.15s;
 }
 button:hover,
-input[type="submit"]:hover {
+input[type='submit']:hover {
   background: var(--accent-dark);
 }
 
@@ -169,7 +169,7 @@ li a {
 p {
   color: var(--ink);
 }
-[role="alert"] {
+[role='alert'] {
   color: #dc2626;
   font-weight: 500;
 }
@@ -345,7 +345,7 @@ footer {
 /* Draw the cross with two centered bars — always optically centered */
 .bookmark-del::before,
 .bookmark-del::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: 50%;

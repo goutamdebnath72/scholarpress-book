@@ -1,6 +1,6 @@
 // middleware.js
-import { auth } from "./auth"; // Chapter 1
-import { NextResponse } from "next/server";
+import { auth } from './auth'; // Chapter 1
+import { NextResponse } from 'next/server';
 
 export default auth(function middleware(req) {
   // Stamp every request with a unique ID (Chapter 8 §8.4.1)
@@ -8,16 +8,16 @@ export default auth(function middleware(req) {
   // unlike Node's 'crypto' module.
   const requestId = crypto.randomUUID();
   const res = NextResponse.next();
-  res.headers.set("x-request-id", requestId);
+  res.headers.set('x-request-id', requestId);
 
   return res;
 });
 
 export const config = {
   matcher: [
-    "/api/auth/:path*",
-    "/(en|bn)/notes/:path*",
-    "/(en|bn)/bookmarks/:path*",
-    "/(en|bn)/dashboard",
+    '/api/auth/:path*',
+    '/(en|bn)/notes/:path*',
+    '/(en|bn)/bookmarks/:path*',
+    '/(en|bn)/dashboard',
   ],
 };

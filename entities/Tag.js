@@ -1,12 +1,12 @@
 // entities/Tag.js
-import { EntitySchema } from 'typeorm'
+import { EntitySchema } from 'typeorm';
 
 export const Tag = new EntitySchema({
   name: 'Tag',
   tableName: 'tags',
   columns: {
-    id:     { type: 'uuid', primary: true, generated: 'uuid' },
-    name:   { type: String },
+    id: { type: 'uuid', primary: true, generated: 'uuid' },
+    name: { type: String },
     // Tags are scoped per user, so two people can each have a
     // "physics" tag without collliding.
     userId: { type: 'uuid' },
@@ -20,10 +20,6 @@ export const Tag = new EntitySchema({
     },
   },
   // A user cannot have two tags with the same name.
-  uniques: [
-    { name: 'uq_tags_user_name', columns: ['userId', 'name'] },
-  ],
-  indices: [
-    { name: 'idx_tags_user', columns: ['userId'] },
-  ],
-})
+  uniques: [{ name: 'uq_tags_user_name', columns: ['userId', 'name'] }],
+  indices: [{ name: 'idx_tags_user', columns: ['userId'] }],
+});
