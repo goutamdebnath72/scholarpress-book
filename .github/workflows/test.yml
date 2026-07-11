@@ -1,0 +1,45 @@
+# .github/workflows/test.yml
+name: Test
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB:       scholarpress_test
+          POSTGRES_USER:     sp
+          POSTGRES_PASSWORD: sp
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 5s
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm ci
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+      - name: Run migrations
+        env:
+          DATABASE_URL: postgresql://sp:sp@localhost:5432/scholarpress_test
+        run: npx typeorm migration:run -d data-source.js
+      - name: Unit and integration tests
+        run: npx vitest run --coverage
+        env:
+          DATABASE_URL: postgresql://sp:sp@localhost:5432/scholarpress_test
+      - name: E2E tests
+        run: npx playwright test
+        env:
+          DATABASE_URL: postgresql://sp:sp@localhost:5432/scholarpress_test
+          BASE_URL:     http://localhost:3000
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/

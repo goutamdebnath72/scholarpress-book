@@ -32,5 +32,4 @@ yarn-error.log*
 # typeorm
 *.sqlite
 .env.production
-/tests
-/.github
+
