@@ -5,6 +5,17 @@ on:
     branches: [main]
   pull_request:
 
+# lib/env.js throws if any of these are absent, and it is imported by both
+# data-source.js and auth.config.js -- so `next build`, vitest and the TypeORM
+# CLI all refuse to start without them. Setting them once at job level avoids
+# the trap of remembering them per step.
+env:
+  DATABASE_URL: postgresql://sp:sp@localhost:5432/scholarpress_test
+  AUTH_SECRET: ci-test-secret-not-used-in-production
+  AUTH_GITHUB_ID: ci-placeholder
+  AUTH_GITHUB_SECRET: ci-placeholder
+  NEXT_PUBLIC_APP_URL: http://localhost:3000
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -17,58 +28,49 @@ jobs:
           POSTGRES_PASSWORD: sp
         ports: ['5432:5432']
         options: >-
-          --health-cmd pg_isready --health-interval 5s
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: '20' }
+        with:
+          node-version: '20'
+          cache: npm
       - run: npm ci
-      # data-source.js hardcodes `ssl: { rejectUnauthorized: false }` because
-      # Supabase requires SSL on every connection. node-postgres gives an
-      # explicit config.ssl precedence over any sslmode in the URL, so the
-      # plain postgres service above cannot be reached over TLS. Rather than
-      # edit data-source.js -- it is printed verbatim in Appendix B -- turn on
-      # SSL in the throwaway CI database with a self-signed cert.
-      - name: Enable SSL on the test database
-        run: |
-          openssl req -new -x509 -days 365 -nodes \
-            -out server.crt -keyout server.key -subj "/CN=localhost"
-          chmod 600 server.key
-          docker cp server.crt "$(docker ps -qf ancestor=postgres:16-alpine)":/var/lib/postgresql/server.crt
-          docker cp server.key "$(docker ps -qf ancestor=postgres:16-alpine)":/var/lib/postgresql/server.key
-          docker exec -u root "$(docker ps -qf ancestor=postgres:16-alpine)" \
-            chown postgres:postgres /var/lib/postgresql/server.crt /var/lib/postgresql/server.key
-          docker exec "$(docker ps -qf ancestor=postgres:16-alpine)" \
-            psql -U sp -d scholarpress_test -c "ALTER SYSTEM SET ssl = on;" \
-              -c "ALTER SYSTEM SET ssl_cert_file = '/var/lib/postgresql/server.crt';" \
-              -c "ALTER SYSTEM SET ssl_key_file = '/var/lib/postgresql/server.key';"
-          docker restart "$(docker ps -qf ancestor=postgres:16-alpine)"
-          for i in $(seq 1 30); do
-            docker exec "$(docker ps -qf ancestor=postgres:16-alpine)" \
-              pg_isready -U sp && break
-            sleep 2
-          done
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+
+      - name: Lint
+        run: npm run lint
+
       - name: Run migrations
-        env:
-          DATABASE_URL: postgresql://sp:sp@localhost:5432/scholarpress_test
         run: npx typeorm migration:run -d data-source.js
+
       - name: Unit and integration tests
         run: npx vitest run --coverage
-        env:
-          DATABASE_URL: postgresql://sp:sp@localhost:5432/scholarpress_test
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
       - name: E2E tests
-        run: npx playwright test
+        # E2E=1 switches on the Credentials provider the fixture signs in with
+        # (Ch 4 §4.9). playwright.config.js builds and starts the app itself,
+        # and the webServer inherits this env.
+        #
+        # AUTH_TRUST_HOST=true is what makes that work. playwright.config.js runs
+        # `next build && next start`, so the app runs as NODE_ENV=production --
+        # and Auth.js v5 refuses to serve /api/auth/* for a host it cannot verify:
+        #     [auth][error] UntrustedHost: Host must be trusted.
+        #     URL was: http://localhost:3000/api/auth/session
+        # The credentials callback then never completes, the redirect to
+        # /dashboard never happens, and the fixture times out on waitForURL.
+        # Setting it here (and nowhere else) keeps the trust confined to CI: a
+        # real deployment behind a proxy should set AUTH_URL instead.
         env:
-          DATABASE_URL: postgresql://sp:sp@localhost:5432/scholarpress_test
-          BASE_URL: http://localhost:3000
-          AUTH_SECRET: ci-test-secret-not-used-in-production
-          NEXT_PUBLIC_APP_URL: http://localhost:3000
-          # Enables the Credentials provider the fixture signs in with (§4.9).
-          # playwright.config.js starts the app itself, and the webServer
-          # inherits this env, so the built app has the provider available.
           E2E: '1'
+          AUTH_TRUST_HOST: 'true'
+        run: npx playwright test
+
       - name: Upload Playwright report on failure
         if: failure()
         uses: actions/upload-artifact@v4
