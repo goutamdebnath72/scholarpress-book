@@ -10,8 +10,19 @@ export function NoteForm({ lang, tagSuggestions = [] }) {
 
   return (
     <form action={formAction}>
-      <input name="title" required placeholder="Title" />
-      <textarea name="content" placeholder="Write your note..." />
+      {/* A placeholder is NOT a label: it vanishes on input and screen readers
+          announce nothing. These inputs previously had only placeholders, which
+          is an accessibility defect and is also why the E2E test could not find
+          them -- getByLabel('Title') matches a <label>, not a placeholder. */}
+      <label htmlFor="note-title">Title</label>
+      <input id="note-title" name="title" required placeholder="Title" />
+
+      <label htmlFor="note-content">Content</label>
+      <textarea
+        id="note-content"
+        name="content"
+        placeholder="Write your note..."
+      />
 
       <TagInput name="tags" suggestions={tagSuggestions} />
 
