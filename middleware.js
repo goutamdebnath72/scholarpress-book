@@ -1,5 +1,5 @@
 // middleware.js
-import { auth } from './auth'; // Chapter 1
+import { auth } from './auth.js'; // Chapter 1
 import { NextResponse } from 'next/server';
 
 export default auth(function middleware(req) {

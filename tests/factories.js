@@ -1,5 +1,5 @@
 // tests/factories.js — test data factories
-import { AppDataSource } from '../data-source';
+import { AppDataSource } from '../data-source.js';
 
 export async function createTestUser(overrides = {}) {
   const repo = AppDataSource.getRepository('User');

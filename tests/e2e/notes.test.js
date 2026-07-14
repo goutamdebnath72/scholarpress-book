@@ -2,7 +2,7 @@
 //
 // Run with `npx playwright test`, not `npm test`: vitest.config.js excludes
 // tests/e2e/, because Playwright's test() cannot run inside Vitest.
-import { test } from './fixtures'; // authenticated page fixture
+import { test } from './fixtures.js'; // authenticated page fixture
 import { expect } from '@playwright/test';
 
 test('can create and view a note', async ({ authenticatedPage: page }) => {

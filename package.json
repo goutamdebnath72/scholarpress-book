@@ -11,30 +11,31 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "typeorm": "typeorm-ts-node-esm -d ./data-source.js",
+    "typeorm": "typeorm -d ./data-source.js",
     "migration:run": "npm run typeorm migration:run",
     "migration:generate": "npm run typeorm migration:generate"
   },
   "dependencies": {
+    "@auth/typeorm-adapter": "^2.11.0",
+    "@sentry/nextjs": "^10.0.0",
     "next": "^16.0.0",
+    "next-auth": "^5.0.0-beta.29",
+    "next-intl": "^4.4.0",
+    "pg": "^8.13.0",
+    "pino": "^9.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "next-auth": "^5.0.0-beta.29",
-    "@auth/typeorm-adapter": "^2.11.0",
-    "typeorm": "^0.3.20",
-    "pg": "^8.13.0",
     "reflect-metadata": "^0.2.2",
-    "next-intl": "^4.4.0",
-    "@sentry/nextjs": "^10.0.0",
-    "pino": "^9.5.0",
+    "typeorm": "^0.3.20",
     "zod": "^3.24.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "@vitest/coverage-v8": "^2.1.0",
     "eslint": "^9.0.0",
     "eslint-config-next": "^16.0.0",
-    "vitest": "^2.1.0",
-    "@vitejs/plugin-react": "^4.3.0",
-    "@playwright/test": "^1.49.0"
+    "vitest": "^2.1.0"
   },
   "engines": {
     "node": ">=20"

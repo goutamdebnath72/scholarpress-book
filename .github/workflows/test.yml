@@ -16,12 +16,38 @@ jobs:
           POSTGRES_USER: sp
           POSTGRES_PASSWORD: sp
         ports: ['5432:5432']
-        options: --health-cmd pg_isready --health-interval 5s
+        options: >-
+          --health-cmd pg_isready --health-interval 5s
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
       - run: npm ci
+      # data-source.js hardcodes `ssl: { rejectUnauthorized: false }` because
+      # Supabase requires SSL on every connection. node-postgres gives an
+      # explicit config.ssl precedence over any sslmode in the URL, so the
+      # plain postgres service above cannot be reached over TLS. Rather than
+      # edit data-source.js -- it is printed verbatim in Appendix B -- turn on
+      # SSL in the throwaway CI database with a self-signed cert.
+      - name: Enable SSL on the test database
+        run: |
+          openssl req -new -x509 -days 365 -nodes \
+            -out server.crt -keyout server.key -subj "/CN=localhost"
+          chmod 600 server.key
+          docker cp server.crt "$(docker ps -qf ancestor=postgres:16-alpine)":/var/lib/postgresql/server.crt
+          docker cp server.key "$(docker ps -qf ancestor=postgres:16-alpine)":/var/lib/postgresql/server.key
+          docker exec -u root "$(docker ps -qf ancestor=postgres:16-alpine)" \
+            chown postgres:postgres /var/lib/postgresql/server.crt /var/lib/postgresql/server.key
+          docker exec "$(docker ps -qf ancestor=postgres:16-alpine)" \
+            psql -U sp -d scholarpress_test -c "ALTER SYSTEM SET ssl = on;" \
+              -c "ALTER SYSTEM SET ssl_cert_file = '/var/lib/postgresql/server.crt';" \
+              -c "ALTER SYSTEM SET ssl_key_file = '/var/lib/postgresql/server.key';"
+          docker restart "$(docker ps -qf ancestor=postgres:16-alpine)"
+          for i in $(seq 1 30); do
+            docker exec "$(docker ps -qf ancestor=postgres:16-alpine)" \
+              pg_isready -U sp && break
+            sleep 2
+          done
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
       - name: Run migrations
@@ -37,6 +63,12 @@ jobs:
         env:
           DATABASE_URL: postgresql://sp:sp@localhost:5432/scholarpress_test
           BASE_URL: http://localhost:3000
+          AUTH_SECRET: ci-test-secret-not-used-in-production
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
+          # Enables the Credentials provider the fixture signs in with (§4.9).
+          # playwright.config.js starts the app itself, and the webServer
+          # inherits this env, so the built app has the provider available.
+          E2E: '1'
       - name: Upload Playwright report on failure
         if: failure()
         uses: actions/upload-artifact@v4

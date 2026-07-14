@@ -1,10 +1,10 @@
 // data-source.js
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import { User } from './entities/User';
-import { Note } from './entities/Note';
-import { Bookmark } from './entities/Bookmark';
-import { Tag } from './entities/Tag';
+import { User } from './entities/User.js';
+import { Note } from './entities/Note.js';
+import { Bookmark } from './entities/Bookmark.js';
+import { Tag } from './entities/Tag.js';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',

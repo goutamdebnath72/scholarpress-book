@@ -2,6 +2,36 @@
 // Edge-compatible configuration — no database imports
 // Imported by both auth.js (Node.js) and middleware.js (Edge)
 import GitHub from 'next-auth/providers/github';
+import Credentials from 'next-auth/providers/credentials';
+
+// Signing in through real GitHub OAuth cannot be driven by a headless browser:
+// rate limits, captchas and MFA make it slow and flaky. So when — and only
+// when — E2E === '1', the config also offers a Credentials provider that
+// accepts an email and returns a session for it, skipping the OAuth dance
+// entirely (Chapter 4 §4.9).
+//
+// The env flag is the guard. A production build never sets E2E, so this
+// provider is not in the array at all and cannot be reached.
+const isE2E = process.env.E2E === '1';
+
+const e2eProvider = Credentials({
+  // Auth.js assigns this provider the id 'credentials'; signIn() and the
+  // signIn callback in auth.js both select it by that name.
+  name: 'E2E Test Login',
+  credentials: { email: { label: 'Email', type: 'email' } },
+  async authorize(credentials) {
+    if (!isE2E) return null; // belt and braces: never authorise outside E2E
+    const email = credentials?.email;
+    if (!email) return null;
+    return {
+      id: `e2e-${email}`,
+      name: 'E2E Test User',
+      email,
+      role: 'viewer',
+      locale: 'en',
+    };
+  },
+});
 
 export const authConfig = {
   providers: [
@@ -20,6 +50,8 @@ export const authConfig = {
         };
       },
     }),
+    // Present only under the E2E flag — never in a production build.
+    ...(isE2E ? [e2eProvider] : []),
   ],
   pages: { signIn: '/en/sign-in' },
 

@@ -1,5 +1,6 @@
 // app/[lang]/sign-in/error/page.js
 // The page Auth.js redirects to on authentication failure
+import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 
 const MESSAGES = {
@@ -27,7 +28,7 @@ export default async function SignInErrorPage({ searchParams }) {
     <main>
       <h1>{msg.title}</h1>
       <p>{msg.body}</p>
-      {msg.recover && <a href="/en/sign-in">{msg.recover}</a>}
+      {msg.recover && <Link href="/en/sign-in">{msg.recover}</Link>}
     </main>
   );
 }

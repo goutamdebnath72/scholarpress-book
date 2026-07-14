@@ -13,6 +13,9 @@ export const test = base.extend({
     const page    = await context.newPage();
 
     await page.goto('/en/sign-in');
+    // The E2E credentials provider takes a single email and returns a session
+    // for it (Chapter 4 §4.9). No OAuth round-trip.
+    await page.getByLabel(/email/i).fill('test@example.com');
     await page.getByRole('button', { name: /sign in/i }).click();
     await page.waitForURL('**/dashboard', { timeout: 10_000 });
 

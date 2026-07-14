@@ -20,6 +20,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     ...authConfig.callbacks, // jwt, session from auth.config
     async signIn({ account }) {
+      // GitHub is the only real provider. The E2E credentials provider is
+      // also allowed, but only when the E2E flag is on — without this second
+      // clause the provider added in auth.config.js would still be rejected
+      // here, and the Playwright fixture could never sign in.
+      if (account?.provider === 'credentials') return process.env.E2E === '1';
       return account?.provider === 'github';
     },
   },
