@@ -14,6 +14,14 @@ import Credentials from 'next-auth/providers/credentials';
 // provider is not in the array at all and cannot be reached.
 const isE2E = process.env.E2E === '1';
 
+// The E2E user's id must be a real uuid that EXISTS in the users table.
+// users.id is `uuid`, and every query filters on it (notes.userId, tags.userId,
+// bookmarks.userId are all uuid with an FK to users.id). Returning something
+// like `e2e-${email}` makes Postgres reject the very first query:
+//     invalid input syntax for type uuid: "e2e-test@example.com"
+// So the id is a fixed, well-known uuid, and CI seeds that row before the tests.
+export const E2E_USER_ID = '00000000-0000-4000-8000-000000000001';
+
 const e2eProvider = Credentials({
   // Auth.js assigns this provider the id 'credentials'; signIn() and the
   // signIn callback in auth.js both select it by that name.
@@ -24,7 +32,7 @@ const e2eProvider = Credentials({
     const email = credentials?.email;
     if (!email) return null;
     return {
-      id: `e2e-${email}`,
+      id: E2E_USER_ID,
       name: 'E2E Test User',
       email,
       role: 'viewer',
