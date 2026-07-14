@@ -10,7 +10,13 @@ export const AppDataSource = new DataSource({
   type: 'postgres',
   url: process.env.DATABASE_URL,
   // Supabase requires SSL on every connection, including in development.
-  ssl: { rejectUnauthorized: false },
+  // A local or CI Postgres does not speak TLS at all, and node-postgres gives
+  // this explicit `ssl` option precedence over any sslmode in the URL -- so
+  // hardcoding it makes those databases unreachable. Enable SSL unless the
+  // connection is plainly local.
+  ssl: /localhost|127\.0\.0\.1/.test(process.env.DATABASE_URL ?? '')
+    ? false
+    : { rejectUnauthorized: false },
   entities: [User, Note, Bookmark, Tag],
 
   // Auto-create tables from entities in development; use migrations in production.
