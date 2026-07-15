@@ -16,7 +16,7 @@
     "add": "বুকমার্ক যোগ করুন"
   },
   "auth": {
-    "signIn": "Google দিয়ে সাইন ইন",
+    "signIn": "GitHub দিয়ে সাইন ইন",
     "signOut": "সাইন আউট",
     "welcome": "স্বাগতম, {name}"
   },
@@ -37,6 +37,6 @@
   },
   "signIn": {
     "title": "সাইন ইন",
-    "google": "Google দিয়ে সাইন ইন করুন"
+    "github": "GitHub দিয়ে সাইন ইন করুন"
   }
 }

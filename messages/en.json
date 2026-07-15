@@ -16,7 +16,7 @@
     "add": "Add bookmark"
   },
   "auth": {
-    "signIn": "Sign in with Google",
+    "signIn": "Sign in with GitHub",
     "signOut": "Sign out",
     "welcome": "Welcome, {name}"
   },
@@ -37,6 +37,6 @@
   },
   "signIn": {
     "title": "Sign in",
-    "google": "Sign in with Google"
+    "github": "Sign in with GitHub"
   }
 }

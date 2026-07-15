@@ -3,7 +3,9 @@
 // <html>/<body> shell, the next-intl provider, and the locale switcher.
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
+import { auth } from '@/auth';
 import { LocaleSwitcher } from '@/components/locale-switcher';
+import { SignOutButton } from '@/components/sign-out-button';
 import './globals.css';
 
 export const metadata = {
@@ -15,6 +17,12 @@ export default async function LocaleLayout({ children, params }) {
   const { lang } = await params;
   const messages = await getMessages({ locale: lang });
 
+  // The header is the one piece of chrome on every page, so it is where the
+  // sign-out control belongs. It also means the nav is no longer shown to
+  // signed-out visitors, who cannot open any of those pages anyway.
+  const session = await auth();
+  const signedIn = Boolean(session?.user?.id);
+
   return (
     <html lang={lang}>
       <body>
@@ -23,12 +31,15 @@ export default async function LocaleLayout({ children, params }) {
             <a href={`/${lang}`}>
               <strong>ScholarPress</strong>
             </a>
-            <nav>
-              <a href={`/${lang}/notes`}>Notes</a>
-              <a href={`/${lang}/bookmarks`}>Bookmarks</a>
-              <a href={`/${lang}/dashboard`}>Dashboard</a>
-            </nav>
+            {signedIn && (
+              <nav>
+                <a href={`/${lang}/notes`}>Notes</a>
+                <a href={`/${lang}/bookmarks`}>Bookmarks</a>
+                <a href={`/${lang}/dashboard`}>Dashboard</a>
+              </nav>
+            )}
             <LocaleSwitcher />
+            {signedIn && <SignOutButton lang={lang} />}
           </header>
           <main>{children}</main>
         </NextIntlClientProvider>
