@@ -19,11 +19,16 @@ export const AppDataSource = new DataSource({
     : { rejectUnauthorized: false },
   entities: [User, Note, Bookmark, Tag],
 
-  // Auto-create tables from entities in development; use migrations in production.
-  synchronize: process.env.NODE_ENV !== 'production',
+  // The schema is managed by migrations (see migrations/ and `npm run
+  // migration:run`), so synchronize stays OFF in every environment. With it on,
+  // TypeORM rewrites the schema from the entities on each boot -- which fights a
+  // migration-managed database (it would, for example, drop the Auth.js adapter's
+  // emailVerified column) and prints a "columns dropped/added" report every time.
+  synchronize: false,
 
-  logging:
-    process.env.NODE_ENV === 'development' ? ['error', 'schema'] : ['error'],
+  // 'schema' logging only had anything to report while synchronize was on.
+  // With migrations in charge, log real errors and nothing else.
+  logging: ['error'],
   maxQueryExecutionTime: 1000,
 
   migrations: ['migrations/*.js'],
